@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexusOne Access</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: white;
+      color: black;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .dark body {
+      background-color: black;
+      color: white;
+    }
+
+    .button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      background-color: transparent;
+      transition: background-color 0.2s;
+    }
+
+    .button:hover {
+      background-color: #f3f3f3;
+    }
+
+    .code {
+      font-family: monospace;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>NexusOne Access</h1>
+  <p id="access-display" class="code"></p>
+  <button class="button" onclick="handleAccess()">Get Access</button>
+
+  <script>
+    let accessCode = "";
+
+    function getAccessCodeFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("accessCode");
+      return code;
+    }
+
+    function handleAccess() {
+      if (!accessCode) {
+        alert("Access code not found in URL");
+        return;
+      }
+      window.location.href = `nexusone://GetFyndAccess?accessCode=${accessCode}`;
+    }
+
+    // On load
+    window.onload = function () {
+      accessCode = getAccessCodeFromUrl();
+      const display = document.getElementById("access-display");
+
+      if (accessCode) {
+        display.innerHTML = `Access Code: <span class="code">${accessCode}</span>`;
+      } else {
+        display.innerHTML = `<span class="error">No access code found in URL.</span>`;
+      }
+    };
+  </script>
+</body>
+</html>
